@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping AS ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Tvtruc\Entities\Episode;
+use Tvtruc\Entities\Banner;
+use Tvtruc\Entities\Translation;
 
 /**
  * @ORM\Entity @ORM\Table(name="tvseries")
@@ -77,6 +79,20 @@ class Serie {
             'keyvalue' => $this->id
         ));
         return (is_null($banner)? '':$banner->getFileName());
+    }
+
+    public function setTranslation($translation){
+        $this->banner = $translation;
+    }
+
+    public function getTranslation(){
+        global $entityManager;
+        $repository = $entityManager->getRepository('tvtruc\Entities\Translation');
+        $translation = $repository->findOneBy(array(
+            'languageid' => '17',
+            'seriesid' => $this->id
+        ));
+        return (is_null($translation) ? 'Ya pas de trad mec' : $translation->getTranslation() );
     }
 
 

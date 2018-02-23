@@ -18,7 +18,7 @@ require_once "../bootstrap.php";
 
 // init du repo
 $repository = $entityManager->getRepository('Tvtruc\Entities\Serie');
-
+$repositoryT = $entityManager->getRepository('Tvtruc\Entities\Translation');
 $searchGet = isset($_GET['name'])? $_GET['name'] : die();
 
 
@@ -34,7 +34,7 @@ $dqlSeries = $query->getResult();
 
 $result = [];
 foreach ($dqlSeries as $serie) {
-    $liste = array("seriesname" => $serie->getname(), "banner" =>$serie->getBanner(), "episodes" => array());
+    $liste = array("seriesname" => $serie->getname(), "translation"=>$serie->getTranslation(), "banner" =>$serie->getBanner(), "episodes" => array());
     foreach ($serie->episodes as $episode) {
         $liste['episodes'][] = $episode->getName();
     }
