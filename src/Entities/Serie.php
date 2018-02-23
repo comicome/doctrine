@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Tvtruc\Entities\Episode;
 
 /**
- * @ORM\Entity @ORM\Table(name="serie")
+ * @ORM\Entity @ORM\Table(name="tvseries")
  **/
 class Serie {
 	/**
@@ -17,10 +17,10 @@ class Serie {
 	 * @ORM\GeneratedValue(strategy="UUID")
 	 */
     protected $id;
-	/**
-	 * @ORM\Column(type="string")
-	 * @var string
-	 */
+    /**
+     * @ORM\Column(type="string", name="SeriesName")
+     * @var string
+     */
     protected $serieName;
 
 	/**
@@ -30,6 +30,12 @@ class Serie {
 	 * @ORM\OneToMany(targetEntity="Episode", mappedBy="serie", cascade={"all"}, fetch="LAZY")
 	 */
 	public $episodes;
+
+    /**
+     * Une serie a une banniere.
+     * @OneToOne(targetEntity="Banner", mappedBy="banniere")
+     */
+	protected $banner;
 
 
 	public function __construct() {
@@ -50,7 +56,7 @@ class Serie {
 	}
 
 	public function getEpisodes() {
-		retun($this->episodes);
+		return($this->episodes);
 	}
 
 	public function addEpisode($episode) {
