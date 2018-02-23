@@ -32,10 +32,11 @@ class Serie {
 	public $episodes;
 
     /**
-     * Une serie a une banniere.
-     * @OneToOne(targetEntity="Banner", mappedBy="banniere")
+     * Une serie a plusieurs episodes
+     * La propriété est definie en public, parce que pour l'utiliser c'est peut-etre aussi simple si j'en ai besoin depuis un autre namespace
+     * @ORM\OneToMany(targetEntity="Banner", mappedBy="serie", cascade={"all"}, fetch="LAZY")
      */
-	protected $banner;
+	public $banner;
 
 
 	public function __construct() {
@@ -59,9 +60,25 @@ class Serie {
 		return($this->episodes);
 	}
 
-	public function addEpisode($episode) {
-		$this->episodes->add($episode);
-	}
+    public function addEpisode($episode) {
+        $this->episodes->add($episode);
+    }
+
+    public function setBanner($banner){
+	    $this->banner = $banner;
+    }
+
+    public function getBanner(){
+        global $entityManager;
+        $repository = $entityManager->getRepository('tvtruc\Entities\Banner');
+        $banner = $repository->findOneBy(array(
+            'keytype' => 'series',
+            'subkey' => 'graphical',
+            'keyvalue' => $this->id
+        ));
+        return (is_null($banner)? '':$banner->getFileName());
+    }
+
 
 
 }

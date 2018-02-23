@@ -22,11 +22,11 @@ $repository = $entityManager->getRepository('Tvtruc\Entities\Serie');
 $searchGet = isset($_GET['name'])? $_GET['name'] : die();
 
 
-// je cherche ceux avec "88" dedans
+
 $dqlSeriesNameSearchPattern = $searchGet;
 $query = $repository->createQueryBuilder('s')
 	->where('s.serieName LIKE :name') // les contraintes
-	->setParameter('name', '%'. $dqlSeriesNameSearchPattern .'%') // remplacer :name par l'expression '%88%'
+	->setParameter('name', '%'. $dqlSeriesNameSearchPattern .'%')
     ->setMaxResults(4)
 	->getQuery();
 $dqlSeries = $query->getResult();
@@ -34,7 +34,7 @@ $dqlSeries = $query->getResult();
 
 $result = [];
 foreach ($dqlSeries as $serie) {
-    $liste = array("seriesname" => $serie->getname(), "episodes" => array());
+    $liste = array("seriesname" => $serie->getname(), "banner" =>$serie->getBanner(), "episodes" => array());
     foreach ($serie->episodes as $episode) {
         $liste['episodes'][] = $episode->getName();
     }
